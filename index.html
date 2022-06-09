@@ -168,20 +168,20 @@
       c.on('click', () => {c.css("background-color", "yellow")});
 
       // test addClass, removeClass, and hasClass
-      const c0 = c[0] ? c[0] : c.elements[0];
+      c[0] = c[0] ? c[0] : c.elements[0];
 
       c.addClass("green");
-      console.log(c0.className)
+      console.log(c[0].className)
       console.log(c.hasClass("green"))
       c.removeClass("green");
-      console.log(c0.className)
+      console.log(c[0].className)
       console.log(c.hasClass("green"))
 
       c.addClass(["green", "big"]);
-      console.log(c0.className)
+      console.log(c[0].className)
       console.log(c.hasClass("big"))
       c.removeClass(["green", "big"]);
-      console.log(c0.className)
+      console.log(c[0].className)
       console.log(c.hasClass("big"))
 
     </script>
