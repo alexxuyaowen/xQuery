@@ -17,9 +17,21 @@
     ></script>
     <title>xQuery</title>
   </head>
+  <style>
+    .green {
+      background-color: green;
+    }
+
+    .big {
+      width: 80%;
+      height: 80%;
+    }
+
+  </style>
   <body>
     <button class="continue">Button 1</button>
     <button class="continue">Button 2</button>
+    <button class="continue" style="background-color: red; width:50%;" id="btn-3">Button 3</button>
 
     <span id="banner-message"
       >banner-message</span
@@ -29,7 +41,7 @@
     </div>
 
     <script>
-      class PQuery {
+      class XQuery {
         constructor(selector) {
           // target the element
           if (
@@ -72,12 +84,58 @@
           });
           return this;
         }
+
+        css(prop, value){
+          if (value) {
+            this.elements.forEach(e => {
+              e.style[prop] = value;
+            })
+
+            return this;
+          } else {
+            const obj = {};
+
+            if (typeof(prop) === "string") {
+              obj[prop] = this.elements[0].style[prop];
+            } else {
+              for (const p of prop) {
+                obj[p] = this.elements[0].style[p];
+              }
+            }
+
+            return obj;
+          }
+        }
+
+        addClass(className) {
+          if (typeof(className) === "string") {
+            this.elements.forEach(e => e.classList.add(className));
+          } else {
+            this.elements.forEach(e => {e.classList.add(...className)});
+          }
+
+          return this;
+        }
+
+        removeClass(className) {
+          if (typeof(className) === "string") {
+            this.elements.forEach(e => e.classList.remove(className));
+          } else {
+            this.elements.forEach(e => {e.classList.remove(...className)});
+          }
+
+          return this;
+        }
+
+        hasClass(className) {
+          for (const e of this.elements) {
+            if (e.classList.contains(className)) return true;
+          }
+          return false;
+        }
       }
 
-      const $$ = function (selector) {
-        console.log('$$ is a function');
-        return new PQuery(selector);
-      };
+      const $$ = selector => new XQuery(selector);
 
       $$('button.continue').html(
         '<h1>Next Step...</h1>'
@@ -98,23 +156,34 @@
         .on('click', () => {
           console.log('Chaining');
         });
+
+      
       const b = $$('#banner-message');
       console.log('A', a);
-      //   console.log(a.html === b.html);
+    
+      // test css 
+      const c = $$("#btn-3");
+      console.log(c.css("background-color"))
+      console.log(c.css(["background-color", "width"]))
+      c.on('click', () => {c.css("background-color", "yellow")});
 
-      //   console.log(
-      //     (() => {
-      //       console.log('hello');
-      //     }) ===
-      //       (() => {
-      //         console.log('hello');
-      //       })
-      //   );
+      // test addClass, removeClass, and hasClass
+      const c0 = c[0] ? c[0] : c.elements[0];
 
-      //   const arr1 = [1, 2, 3];
-      //   const arr2 = [2, 4, 5];
-      //   console.log(arr1 === arr2);
-      //   console.log(arr1.forEach === arr2.forEach);
+      c.addClass("green");
+      console.log(c0.className)
+      console.log(c.hasClass("green"))
+      c.removeClass("green");
+      console.log(c0.className)
+      console.log(c.hasClass("green"))
+
+      c.addClass(["green", "big"]);
+      console.log(c0.className)
+      console.log(c.hasClass("big"))
+      c.removeClass(["green", "big"]);
+      console.log(c0.className)
+      console.log(c.hasClass("big"))
+
     </script>
   </body>
 </html>
