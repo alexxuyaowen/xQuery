@@ -52,6 +52,8 @@
           } else {
             this.elements =
               document.querySelectorAll(selector);
+            
+            this.elements.forEach((e, i) => {this[i] = e});
           }
         }
         html(innerhtml) {
@@ -168,8 +170,6 @@
       c.on('click', () => {c.css("background-color", "yellow")});
 
       // test addClass, removeClass, and hasClass
-      c[0] = c[0] ? c[0] : c.elements[0];
-
       c.addClass("green");
       console.log(c[0].className)
       console.log(c.hasClass("green"))
